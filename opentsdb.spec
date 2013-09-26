@@ -41,6 +41,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
+%doc README THANKS NEWS AUTHORS
 %attr(755,root,root) %{_bindir}/tsdb
 %dir %{_datadir}/opentsdb
 %attr(755,root,root) %{_datadir}/opentsdb/*.sh
