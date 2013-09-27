@@ -8,6 +8,7 @@ Source0:	https://github.com/OpenTSDB/opentsdb/releases/download/v2.0.0RC1/%{name
 # Source0-md5:	e486e8a60a24f8169eebb5c663c5c082
 URL:		http://opentsdb.net/
 Requires:	gnuplot
+Requires:	jre
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -32,9 +33,11 @@ downsample data and can easily store billions of data points.
 
 %install
 rm -rf $RPM_BUILD_ROOT
+install -d $RPM_BUILD_ROOT/var/cache/%{name}
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT/var/cache/opentsdb
+
+%{__rm} $RPM_BUILD_ROOT%{_datadir}/%{name}/mygnuplot.bat
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -44,5 +47,24 @@ rm -rf $RPM_BUILD_ROOT
 %doc README THANKS NEWS AUTHORS
 %attr(755,root,root) %{_bindir}/tsdb
 %dir %{_datadir}/opentsdb
-%attr(755,root,root) %{_datadir}/opentsdb/*.sh
-%dir %{_localstatedir}/cache/opentsdb
+%attr(755,root,root) %{_datadir}/%{name}/*.sh
+%{_datadir}/%{name}/logback.xml
+%{_datadir}/%{name}/opentsdb.conf
+%{_datadir}/%{name}/static
+
+# third_party
+%{_datadir}/%{name}/asynchbase-1.4.1.jar
+%{_datadir}/%{name}/guava-13.0.1.jar
+%{_datadir}/%{name}/jackson-annotations-2.1.4.jar
+%{_datadir}/%{name}/jackson-core-2.1.4.jar
+%{_datadir}/%{name}/jackson-databind-2.1.4.jar
+%{_datadir}/%{name}/log4j-over-slf4j-1.7.2.jar
+%{_datadir}/%{name}/logback-classic-1.0.9.jar
+%{_datadir}/%{name}/logback-core-1.0.9.jar
+%{_datadir}/%{name}/netty-3.6.2.Final.jar
+%{_datadir}/%{name}/slf4j-api-1.7.2.jar
+%{_datadir}/%{name}/suasync-1.4.0.jar
+%{_datadir}/%{name}/tsdb-2.0.0.jar
+%{_datadir}/%{name}/zookeeper-3.3.6.jar
+
+%dir %{_localstatedir}/cache/%{name}
