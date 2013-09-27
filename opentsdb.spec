@@ -29,7 +29,7 @@ downsample data and can easily store billions of data points.
 
 %build
 %configure
-%{__make}
+%{__make} -j1
 
 %install
 rm -rf $RPM_BUILD_ROOT
