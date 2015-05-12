@@ -1,11 +1,11 @@
 Summary:	A scalable, distributed Time Series Database
 Name:		opentsdb
-Version:	2.0.0
+Version:	2.1.0
 Release:	0.1
 License:	LGPL v2.1+
 Group:		Applications/Databases
-Source0:	https://github.com/OpenTSDB/opentsdb/releases/download/v2.0.0RC1/%{name}-%{version}.tar.gz
-# Source0-md5:	e486e8a60a24f8169eebb5c663c5c082
+Source0:	https://github.com/OpenTSDB/opentsdb/releases/download/v%{version}/%{name}-%{version}.tar.gz
+# Source0-md5:	8438173a0b0ddfcbd49b731870ca9f4c
 URL:		http://opentsdb.net/
 Requires:	gnuplot
 Requires:	jre
@@ -34,10 +34,10 @@ downsample data and can easily store billions of data points.
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/var/cache/%{name}
-%{__make} install \
+%{__make} install -j1 \
 	DESTDIR=$RPM_BUILD_ROOT
 
-%{__rm} $RPM_BUILD_ROOT%{_datadir}/%{name}/mygnuplot.bat
+%{__rm} $RPM_BUILD_ROOT%{_datadir}/%{name}/bin/mygnuplot.bat
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -46,25 +46,36 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc README THANKS NEWS AUTHORS
 %attr(755,root,root) %{_bindir}/tsdb
-%dir %{_datadir}/opentsdb
-%attr(755,root,root) %{_datadir}/%{name}/*.sh
-%{_datadir}/%{name}/logback.xml
-%{_datadir}/%{name}/opentsdb.conf
+%dir %{_datadir}/%{name}
+%dir %{_datadir}/%{name}/bin
+%attr(755,root,root) %{_datadir}/%{name}/bin/*.sh
+%attr(755,root,root) %{_datadir}/%{name}/bin/tsdb
+%{_datadir}/%{name}/tools
 %{_datadir}/%{name}/static
 
 # third_party
-%{_datadir}/%{name}/asynchbase-1.4.1.jar
-%{_datadir}/%{name}/guava-13.0.1.jar
-%{_datadir}/%{name}/jackson-annotations-2.1.4.jar
-%{_datadir}/%{name}/jackson-core-2.1.4.jar
-%{_datadir}/%{name}/jackson-databind-2.1.4.jar
-%{_datadir}/%{name}/log4j-over-slf4j-1.7.2.jar
-%{_datadir}/%{name}/logback-classic-1.0.9.jar
-%{_datadir}/%{name}/logback-core-1.0.9.jar
-%{_datadir}/%{name}/netty-3.6.2.Final.jar
-%{_datadir}/%{name}/slf4j-api-1.7.2.jar
-%{_datadir}/%{name}/suasync-1.4.0.jar
-%{_datadir}/%{name}/tsdb-2.0.0.jar
-%{_datadir}/%{name}/zookeeper-3.3.6.jar
+%dir %{_datadir}/%{name}/lib
+%{_datadir}/%{name}/lib/async-1.4.0.jar
+%{_datadir}/%{name}/lib/asynchbase-1.6.0.jar
+%{_datadir}/%{name}/lib/guava-18.0.jar
+%{_datadir}/%{name}/lib/jackson-annotations-2.4.3.jar
+%{_datadir}/%{name}/lib/jackson-core-2.4.3.jar
+%{_datadir}/%{name}/lib/jackson-databind-2.4.3.jar
+%{_datadir}/%{name}/lib/log4j-over-slf4j-1.7.7.jar
+%{_datadir}/%{name}/lib/logback-classic-1.0.13.jar
+%{_datadir}/%{name}/lib/logback-core-1.0.13.jar
+%{_datadir}/%{name}/lib/netty-3.9.4.Final.jar
+%{_datadir}/%{name}/lib/protobuf-java-2.5.0.jar
+%{_datadir}/%{name}/lib/slf4j-api-1.7.7.jar
+%{_datadir}/%{name}/lib/tsdb-2.1.0.jar
+%{_datadir}/%{name}/lib/zookeeper-3.3.6.jar
 
 %dir %{_localstatedir}/cache/%{name}
+
+# this looks like install error
+%dir %{_datadir}/%{name}/etc
+%dir %{_datadir}/%{name}/etc/opentsdb
+%dir %{_datadir}/%{name}/etc/init.d
+%{_datadir}/%{name}/etc/opentsdb/logback.xml
+%{_datadir}/%{name}/etc/opentsdb/opentsdb.conf
+%attr(754,root,root) %{_datadir}/%{name}/etc/init.d/opentsdb
